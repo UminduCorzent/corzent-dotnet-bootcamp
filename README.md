@@ -11,6 +11,7 @@ The following topics are covered:
   - API Security & Middleware
   - Advanced Topics
 
+
 ## Learning Objectives
 By the end of this bootcamp, I aim to:
   - Master ASP.NET Core Web API fundamentals and architecture
