@@ -1,0 +1,6 @@
+@Day_2___RoutingDemoApi_HostAddress = http://localhost:5181
+
+GET {{Day_2___RoutingDemoApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
