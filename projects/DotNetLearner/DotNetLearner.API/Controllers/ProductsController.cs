@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Day_2___RoutingDemoApi.Controllers
+namespace DotNetLearner.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -27,8 +27,8 @@ namespace Day_2___RoutingDemoApi.Controllers
         [HttpPost]
         public IActionResult Create(int id, string name)
         {
-            var product = new { Id = id, Name = name };
-            return CreatedAtAction(nameof(GetById),new { id }, product);
+            var product = new { Id = id, Name = name};
+            return CreatedAtAction(nameof(GetById), new { id }, product);
         }
     }
 }
