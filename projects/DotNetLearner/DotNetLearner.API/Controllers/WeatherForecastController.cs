@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Day_1___HelloWorldApi.Controllers
+namespace DotNetLearner.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -30,6 +30,7 @@ namespace Day_1___HelloWorldApi.Controllers
             .ToArray();
         }
 
+        // Add custom endpoin
         [HttpGet("hello")]
         public string Hello() => "Hello from .NET Bootcamp";
     }

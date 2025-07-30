@@ -1,6 +1,0 @@
-@Day_1___HelloWorldApi_HostAddress = http://localhost:5137
-
-GET {{Day_1___HelloWorldApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

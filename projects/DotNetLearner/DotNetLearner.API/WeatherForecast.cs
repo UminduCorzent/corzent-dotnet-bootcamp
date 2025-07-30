@@ -1,4 +1,4 @@
-namespace Day_1___HelloWorldApi
+namespace DotNetLearner.API
 {
     public class WeatherForecast
     {
