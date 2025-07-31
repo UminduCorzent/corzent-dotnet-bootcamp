@@ -1,5 +1,6 @@
 ﻿using DotNetLearner.API.DTOs;
 using DotNetLearner.API.Models;
+using DotNetLearner.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetLearner.API.Controllers
@@ -8,34 +9,54 @@ namespace DotNetLearner.API.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Product> products =
-            [
-                new() { Id = 1, Name = "Laptop", Price = 380_000 },
-                new() { Id = 2, Name = "Phone", Price = 50_000 }
-            ];
+            var products = _productService.GetAll();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var product = new Product { Id = id, Name = $"Product {id}", Price = 3000 };
+            var product = _productService.GetById(id);
+            if (product == null) return BadRequest(new { message = "Product not found" });
+
             return Ok(product);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] ProductDto dto)
+        public IActionResult Create(ProductDto dto)
         {
-            var product = new Product
-            {
-                Id = 10,
-                Name = dto.Name,
-                Price = dto.Price,
-            };
+            var product = _productService.Create(dto);
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] ProductDto dto)
+        {
+            var isUpdated = _productService.Update(id, dto);
+            if (!isUpdated)
+                return BadRequest(new { message = "Product not found" });
+
+            return Ok(new { message = "Product updated successfully" });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var isDeleted = _productService.Delete(id);
+            if (!isDeleted)
+                return BadRequest(new { message = "Product not found" });
+
+            return Ok(new { message = "Product deleted successfully" });
         }
     }
 }

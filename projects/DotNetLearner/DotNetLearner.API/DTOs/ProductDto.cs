@@ -9,6 +9,6 @@ namespace DotNetLearner.API.DTOs
         public string Name { get; set; }
 
         [Range(1, 1000000)]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }
