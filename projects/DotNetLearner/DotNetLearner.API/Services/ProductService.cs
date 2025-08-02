@@ -1,53 +1,60 @@
-﻿using DotNetLearner.API.DTOs;
+﻿using DotNetLearner.API.Data;
+using DotNetLearner.API.DTOs;
 using DotNetLearner.API.Models;
 
 namespace DotNetLearner.API.Services
 {
     public class ProductService : IProductService
     {
-        private static List<Product> _products = new List<Product>();
-        private static int _nextId = 1;
+        private readonly AppDbContext _context;
+
+        public ProductService(AppDbContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Product> GetAll()
         {
-            return _products;
+            return _context.Products.ToList();
         }
 
         public Product GetById(int id)
         {
-            return _products.FirstOrDefault(p => p.Id == id);
+            return _context.Products.Find(id);
         }
 
         public Product Create(ProductDto dto)
         {
             var product = new Product
             {
-                Id = _nextId++,
                 Name = dto.Name,
                 Price = dto.Price!.Value
             };
 
-            _products.Add(product);
+            _context.Products.Add(product);
+            _context.SaveChanges();
             return product;
         }
 
         public bool Update(int id, ProductDto dto)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Find(id);
             if (product == null) return false;
 
             product.Name = dto.Name ?? product.Name;
             product.Price = dto.Price ?? product.Price;
 
+            _context.SaveChanges();
             return true;
         }
 
         public bool Delete(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Find(id);
             if (product == null) return false;
 
-            _products.Remove(product);
+            _context.Products.Remove(product);
+            _context.SaveChanges();
             return true;
         }
     }
