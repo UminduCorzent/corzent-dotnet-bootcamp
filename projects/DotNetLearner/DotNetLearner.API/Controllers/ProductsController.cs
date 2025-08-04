@@ -1,10 +1,12 @@
 ﻿using DotNetLearner.API.DTOs;
 using DotNetLearner.API.Models;
 using DotNetLearner.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetLearner.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
