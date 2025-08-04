@@ -1,6 +1,7 @@
 ﻿using DotNetLearner.API.Data;
 using DotNetLearner.API.DTOs;
 using DotNetLearner.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetLearner.API.Services
 {
@@ -13,17 +14,17 @@ namespace DotNetLearner.API.Services
             _context = context;
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
         {
-            return _context.Products.ToList();
+            return await _context.Products.ToListAsync();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return _context.Products.Find(id);
+            return await _context.Products.FindAsync(id);
         }
 
-        public Product Create(ProductDto dto)
+        public async Task<Product> Create(ProductDto dto)
         {
             var product = new Product
             {
@@ -32,29 +33,29 @@ namespace DotNetLearner.API.Services
             };
 
             _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return product;
         }
 
-        public bool Update(int id, ProductDto dto)
+        public async Task<bool> Update(int id, ProductDto dto)
         {
-            var product = _context.Products.Find(id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null) return false;
 
             product.Name = dto.Name ?? product.Name;
             product.Price = dto.Price ?? product.Price;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var product = _context.Products.Find(id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null) return false;
 
             _context.Products.Remove(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
     }
