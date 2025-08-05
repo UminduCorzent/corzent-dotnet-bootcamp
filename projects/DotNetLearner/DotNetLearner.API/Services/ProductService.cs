@@ -1,4 +1,5 @@
-﻿using DotNetLearner.API.Data;
+﻿using AutoMapper;
+using DotNetLearner.API.Data;
 using DotNetLearner.API.DTOs;
 using DotNetLearner.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace DotNetLearner.API.Services
     public class ProductService : IProductService
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductService(AppDbContext context)
+        public ProductService(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Product>> GetAll()
@@ -26,14 +29,11 @@ namespace DotNetLearner.API.Services
 
         public async Task<Product> Create(ProductDto dto)
         {
-            var product = new Product
-            {
-                Name = dto.Name,
-                Price = dto.Price!.Value
-            };
+            var product = _mapper.Map<Product>(dto);
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
             return product;
         }
 
@@ -42,10 +42,9 @@ namespace DotNetLearner.API.Services
             var product = await _context.Products.FindAsync(id);
             if (product == null) return false;
 
-            product.Name = dto.Name ?? product.Name;
-            product.Price = dto.Price ?? product.Price;
-
+            _mapper.Map(dto, product);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -56,6 +55,7 @@ namespace DotNetLearner.API.Services
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+
             return true;
         }
     }

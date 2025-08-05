@@ -1,5 +1,6 @@
 using DotNetLearner.API.Data;
 using DotNetLearner.API.Helpers;
+using DotNetLearner.API.MappingProfiles;
 using DotNetLearner.API.Middleware;
 using DotNetLearner.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,6 +41,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
     };
 });
+
+builder.Services.AddAutoMapper(typeof(ProductProfile));
 
 var app = builder.Build();
 
